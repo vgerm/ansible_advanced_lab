@@ -1,0 +1,66 @@
+version: '3.2'
+services:
+  ansible:
+    container_name: ansible
+    hostname: ansible
+    domainname: lab.local
+    image: vgerm/centos7-c9:latest
+    networks:
+      - empty
+    tmpfs:
+      - /run
+    ports:
+      - "3000:3000"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /etc/hosts:/etc/hosts
+      - ./common/get_course_examples.sh:/usr/local/bin/get_course_examples.sh
+    cap_add:
+      - SYS_ADMIN
+  server01:
+    container_name: server01
+    hostname: server01
+    domainname: lab.local
+    image: vgerm/centos7-ssh:latest
+    networks:
+      - empty
+    tmpfs:
+      - /run
+    ports:
+      - "18000:80"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /etc/hosts:/etc/hosts
+    cap_add:
+      - SYS_ADMIN
+  server02:
+    container_name: server02
+    hostname: server02
+    domainname: lab.local
+    image: vgerm/centos7-ssh:latest
+    networks:
+      - empty
+    tmpfs:
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /etc/hosts:/etc/hosts
+    cap_add:
+      - SYS_ADMIN
+  server03:
+    container_name: server03
+    hostname: server03
+    domainname: lab.local
+    image: vgerm/deb9-ssh:latest
+    networks:
+      - empty
+    tmpfs:
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /etc/hosts:/etc/hosts
+    cap_add:
+      - SYS_ADMIN
+
+networks:
+  empty:

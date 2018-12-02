@@ -1,0 +1,81 @@
+version: '3.2'
+services:
+  ansible:
+    container_name: ansible
+    hostname: ansible
+    domainname: lab.local
+    image: vgerm/centos7-c9:latest
+    networks:
+      - ansible
+    tmpfs:
+      - /run
+    ports:
+      - "3000:3000"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /root/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - /root/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro
+      - /root/.ssh/authorized_keys:/root/.ssh/authorized_keys:ro
+      - /etc/ansible/hosts:/etc/ansible/hosts
+      - /etc/ansible/ansible.cfg:/etc/ansible/ansible.cfg
+      - /etc/hosts:/etc/hosts
+      - ./common/get_course_examples.sh:/usr/local/bin/get_course_examples.sh
+      - ./common/ssh_config:/root/.ssh/config
+    cap_add:
+      - SYS_ADMIN
+  server01:
+    container_name: server01
+    hostname: server01
+    domainname: lab.local
+    image: vgerm/centos7-ssh:latest
+    networks:
+      - ansible
+    tmpfs:
+      - /run
+    ports:
+      - "18000:80"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /root/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - /root/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro
+      - /root/.ssh/authorized_keys:/root/.ssh/authorized_keys:ro
+      - /etc/hosts:/etc/hosts
+    cap_add:
+      - SYS_ADMIN
+  server02:
+    container_name: server02
+    hostname: server02
+    domainname: lab.local
+    image: vgerm/centos7-ssh:latest
+    networks:
+      - ansible
+    tmpfs:
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /root/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - /root/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro
+      - /root/.ssh/authorized_keys:/root/.ssh/authorized_keys:ro
+      - /etc/hosts:/etc/hosts
+    cap_add:
+      - SYS_ADMIN
+  server03:
+    container_name: server03
+    hostname: server03
+    domainname: lab.local
+    image: vgerm/deb9-ssh:latest
+    networks:
+      - ansible
+    tmpfs:
+      - /run
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /root/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+      - /root/.ssh/id_rsa.pub:/root/.ssh/id_rsa.pub:ro
+      - /root/.ssh/authorized_keys:/root/.ssh/authorized_keys:ro
+      - /etc/hosts:/etc/hosts
+    cap_add:
+      - SYS_ADMIN
+
+networks:
+  ansible:
